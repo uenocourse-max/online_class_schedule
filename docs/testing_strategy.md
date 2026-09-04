@@ -41,7 +41,7 @@ Run system tests with:
 bin/rails db:test:prepare test:system
 ```
 
-The local environment must provide Chrome/Chromium. GitHub Actions installs `chromium` and sets `CHROME_BIN=/usr/bin/chromium` before running the system-test job.
+The local environment must provide Chrome/Chromium. GitHub Actions installs `chromium`, sets `CHROME_BIN=/usr/bin/chromium`, and uses CI-compatible headless flags before running the system-test job.
 
 ## Security and Quality Checks
 
