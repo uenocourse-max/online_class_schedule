@@ -28,12 +28,20 @@ Cover:
 
 ## System Tests
 
-Use Capybara/Selenium for a small number of high-value flows:
+Use Capybara/Selenium with the headless Chromium driver for a small number of high-value flows. The shared setup lives in `test/application_system_test_case.rb`, and CI installs Chromium explicitly:
 
 1. Admin logs in, creates a classroom, enrolls a student, and adds a schedule.
 2. Teacher logs in and records progress for an assigned student.
 3. Student logs in and sees the enrolled class, schedule, and progress note.
 4. Student sees an authorization response when attempting another student's URL.
+
+Run system tests with:
+
+```sh
+bin/rails db:test:prepare test:system
+```
+
+The local environment must provide Chrome/Chromium. GitHub Actions installs `chromium` and sets `CHROME_BIN=/usr/bin/chromium` before running the system-test job.
 
 ## Security and Quality Checks
 

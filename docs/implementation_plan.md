@@ -99,6 +99,12 @@ Phase 1 complete. The repository now has the school-domain schema and model foun
 - Added helper tests covering past, current, and future dates plus CSS class mapping.
 - Verification: focused helper tests passed with 2 tests and 4 assertions; full suite passed with 31 tests and 153 assertions; RuboCop and Brakeman remained clean.
 
+### System Test CI Fix
+
+- Added `ApplicationSystemTestCase` and a login/dashboard smoke test under `test/system/`, fixing Rails' missing `test/system` load path error.
+- Configured Selenium to honor `CHROME_BIN` and added explicit Chromium installation to the GitHub Actions system-test job.
+- Local system-test execution requires Chrome/Chromium; the repository's non-browser suite remains independent of that binary.
+
 ## Phase 1: Foundation and database
 
 1. Confirm runtime and dependency baseline.
