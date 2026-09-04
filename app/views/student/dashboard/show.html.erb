@@ -1,0 +1,21 @@
+<% content_for :title, "Student Dashboard | Online School" %>
+
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Student workspace</p>
+    <h1>Your learning space</h1>
+    <p class="muted">Classes, schedule, and progress gathered in one place.</p>
+  </div>
+  <span class="status-badge">Student</span>
+</div>
+
+<section class="metric-grid metric-grid-three">
+  <article class="metric-card"><span class="metric-label">My classes</span><strong><%= @classrooms.size %></strong><span class="muted">Active enrollments</span></article>
+  <article class="metric-card"><span class="metric-label">Current average</span><strong><%= @average_score ? number_with_precision(@average_score, precision: 1) : "--" %></strong><span class="muted">Across progress records</span></article>
+  <article class="metric-card accent-card"><span class="metric-label">Next sessions</span><strong><%= @upcoming_schedules.size %></strong><span class="muted">Scheduled classes</span></article>
+</section>
+
+<section class="content-grid">
+  <article class="content-panel"><div class="panel-heading"><div><p class="eyebrow">Keep moving</p><h2>My classes</h2></div><span class="panel-icon">01</span></div><% if @classrooms.any? %><ul class="clean-list"><% @classrooms.each do |classroom| %><li><strong><%= link_to classroom.name, student_class_path(classroom), class: "text-link" %></strong><span><%= classroom.teacher.name %></span></li><% end %></ul><% else %><div class="empty-state"><strong>No classes enrolled</strong><p>Your enrolled classes will appear here.</p></div><% end %></article>
+  <article class="content-panel"><div class="panel-heading"><div><p class="eyebrow">Your progress</p><h2>Latest result</h2></div><span class="panel-icon">02</span></div><% if @latest_progress %><div class="empty-state"><strong><%= @latest_progress.score.to_i %> · <%= @latest_progress.status.humanize %></strong><p><%= @latest_progress.note.presence || "No teacher note for this entry." %></p><%= link_to "View progress history", student_progress_index_path, class: "text-link" %></div><% else %><div class="empty-state"><strong>No progress recorded</strong><p>Your teacher's notes and progress history will appear here.</p></div><% end %></article>
+</section>

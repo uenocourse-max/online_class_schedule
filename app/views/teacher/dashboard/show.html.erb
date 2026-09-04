@@ -1,0 +1,21 @@
+<% content_for :title, "Teacher Dashboard | Online School" %>
+
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Teacher workspace</p>
+    <h1>Your teaching day</h1>
+    <p class="muted">Classes, students, and progress in one focused view.</p>
+  </div>
+  <span class="status-badge">Teacher</span>
+</div>
+
+<section class="metric-grid metric-grid-three">
+  <article class="metric-card"><span class="metric-label">Assigned classes</span><strong><%= @classrooms.size %></strong><span class="muted">Your active classrooms</span></article>
+  <article class="metric-card"><span class="metric-label">Upcoming sessions</span><strong><%= @upcoming_schedules.size %></strong><span class="muted">Next five scheduled</span></article>
+  <article class="metric-card accent-card"><span class="metric-label">Progress entries</span><strong><%= @recent_progress.size %></strong><span class="muted">Recent records</span></article>
+</section>
+
+<section class="content-grid">
+  <article class="content-panel"><div class="panel-heading"><div><p class="eyebrow">Assigned to you</p><h2>My classes</h2></div><span class="panel-icon">01</span></div><% if @classrooms.any? %><ul class="clean-list"><% @classrooms.each do |classroom| %><li><strong><%= link_to classroom.name, teacher_class_path(classroom), class: "text-link" %></strong><span><%= classroom.students.size %> students</span></li><% end %></ul><% else %><div class="empty-state"><strong>No classes assigned</strong><p>Assigned classrooms will appear here when an admin creates them.</p></div><% end %></article>
+  <article class="content-panel"><div class="panel-heading"><div><p class="eyebrow">Next sessions</p><h2>Schedule</h2></div><span class="panel-icon">02</span></div><% if @upcoming_schedules.any? %><ul class="clean-list"><% @upcoming_schedules.each do |schedule| %><li><strong><%= schedule.schedule_date.strftime("%b %-d") %> · <%= schedule.start_time.strftime("%H:%M") %></strong><span><%= schedule.classroom.name %></span></li><% end %></ul><% else %><div class="empty-state"><strong>No upcoming sessions</strong><p>Your assigned class schedule will appear here.</p></div><% end %></article>
+</section>

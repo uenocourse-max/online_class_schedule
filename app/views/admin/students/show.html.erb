@@ -1,0 +1,35 @@
+<% content_for :title, "#{@student.name} | Online School" %>
+
+<div class="page-heading">
+	<div>
+		<p class="eyebrow">Admin / Student profile</p>
+		<h1><%= @student.name %></h1>
+		<p class="muted"><%= @student.user.email %></p>
+	</div>
+	<%= link_to "Edit", edit_admin_student_path(@student), class: "button button-secondary" %>
+</div>
+
+<div class="detail-grid">
+	<section class="content-panel">
+		<p class="eyebrow">Profile</p>
+		<dl class="detail-list">
+			<dt>Status</dt><dd><%= @student.status.humanize %></dd>
+			<dt>Phone</dt><dd><%= @student.phone.presence || "Not provided" %></dd>
+			<dt>Address</dt><dd><%= @student.address.presence || "Not provided" %></dd>
+		</dl>
+	</section>
+	<section class="content-panel">
+		<p class="eyebrow">Enrolled classes</p>
+		<% if @student.classrooms.any? %>
+			<ul class="clean-list">
+				<% @student.classrooms.each do |classroom| %>
+					<li><strong><%= classroom.name %></strong><span><%= classroom.course.name %></span></li>
+				<% end %>
+			</ul>
+		<% else %>
+			<%= render "shared/empty_state", title: "No classes yet" %>
+		<% end %>
+	</section>
+</div>
+
+<%= link_to "Back to students", admin_students_path, class: "text-link back-link" %>

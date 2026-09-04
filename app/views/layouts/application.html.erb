@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Online School" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Online School">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="<%= current_user ? "app-body" : "auth-body" %>">
+    <% if current_user %>
+      <div class="app-shell">
+        <aside class="sidebar">
+          <a class="brand" href="<%= dashboard_path_for(current_user) %>"><span class="brand-mark">OS</span><span>Online School</span></a>
+          <div class="sidebar-role"><span class="eyebrow">Workspace</span><strong><%= role_label(current_user.role) %></strong></div>
+          <nav aria-label="Main navigation">
+            <% navigation_items.each do |label, path| %>
+              <%= link_to label, path, class: (request.path == path ? "nav-link active" : "nav-link"), aria: { current: (request.path == path ? "page" : nil) } %>
+            <% end %>
+          </nav>
+          <div class="sidebar-footer">
+            <%= button_to "Log out", logout_path, method: :delete, class: "nav-link logout-link" %>
+          </div>
+        </aside>
+        <main class="main-content">
+          <header class="topbar"><span class="topbar-label">School operations</span><span class="user-chip"><%= current_user.email %></span></header>
+          <%= render "shared/flash" %>
+          <div class="page-content"><%= yield %></div>
+        </main>
+      </div>
+    <% else %>
+      <%= render "shared/flash" %>
+      <%= yield %>
+    <% end %>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<% content_for :title, "Admin Dashboard | Online School" %>
+
+<div class="page-heading">
+  <div>
+    <p class="eyebrow">Admin workspace</p>
+    <h1>Good morning, <%= current_user.email.split("@").first.capitalize %></h1>
+    <p class="muted">A clear view of the school, ready for the next action.</p>
+  </div>
+  <span class="status-badge">System overview</span>
+</div>
+
+<div class="metric-grid">
+  <article class="metric-card"><span class="metric-label">Students</span><strong><%= @student_count %></strong><span class="muted"><%= @active_student_count %> active</span></article>
+  <article class="metric-card"><span class="metric-label">Teachers</span><strong><%= @teacher_count %></strong><span class="muted">Faculty accounts</span></article>
+  <article class="metric-card"><span class="metric-label">Active classes</span><strong><%= @active_classroom_count %></strong><span class="muted"><%= @course_count %> courses</span></article>
+  <article class="metric-card accent-card"><span class="metric-label">Today</span><strong><%= @todays_schedules.size %></strong><span class="muted"><%= Date.current.strftime("%b %-d") %> schedules</span></article>
+</div>
+
+<section class="content-grid">
+  <article class="content-panel">
+    <div class="panel-heading"><div><p class="eyebrow">Today</p><h2>Schedule</h2></div><span class="panel-icon">01</span></div>
+    <% if @todays_schedules.any? %><ul class="clean-list"><% @todays_schedules.each do |schedule| %><li><strong><%= schedule.start_time.strftime("%H:%M") %> · <%= schedule.classroom.name %></strong><span><%= schedule.teacher.name %></span></li><% end %></ul><% else %><div class="empty-state"><strong>No schedules yet</strong><p>Once classes and schedules are created, today's teaching plan will appear here.</p></div><% end %>
+  </article>
+  <article class="content-panel">
+    <div class="panel-heading"><div><p class="eyebrow">Student care</p><h2>Needs attention</h2></div><span class="panel-icon">02</span></div>
+    <% if @students_needing_attention.any? %><ul class="clean-list"><% @students_needing_attention.each do |progress| %><li><strong><%= progress.student.name %></strong><span><%= number_with_precision(progress.score, precision: 0) %> · <%= progress.status.humanize %></span></li><% end %></ul><% else %><div class="empty-state"><strong>No students flagged</strong><p>Students needing support will appear here as progress is recorded.</p></div><% end %>
+  </article>
+</section>

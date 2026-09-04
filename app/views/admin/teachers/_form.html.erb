@@ -1,0 +1,15 @@
+<%= render "shared/form_errors", object: teacher %>
+
+<%= form_with model: [:admin, teacher], class: "stacked-form resource-form" do |form| %>
+  <%= form.fields_for :user do |user_form| %>
+    <div><%= user_form.label :email, "Login email" %><%= user_form.email_field :email, required: true %></div>
+    <div><%= user_form.label :password, (teacher.persisted? ? "Password (leave blank to keep current)" : "Password") %><%= user_form.password_field :password, required: !teacher.persisted? %></div>
+    <div><%= user_form.label :password_confirmation, "Confirm password" %><%= user_form.password_field :password_confirmation, required: !teacher.persisted? %></div>
+  <% end %>
+  <div><%= form.label :name %><%= form.text_field :name, required: true %></div>
+  <div><%= form.label :specialization %><%= form.text_field :specialization %></div>
+  <div><%= form.label :status %><%= form.select :status, Teacher::STATUSES.map { |status| [status.humanize, status] } %></div>
+  <div><%= form.label :phone %><%= form.telephone_field :phone %></div>
+  <div><%= form.label :bio %><%= form.text_area :bio, rows: 4 %></div>
+  <%= form.submit class: "button button-primary" %>
+<% end %>

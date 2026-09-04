@@ -1,0 +1,35 @@
+<% content_for :title, "#{@teacher.name} | Online School" %>
+
+<div class="page-heading">
+	<div>
+		<p class="eyebrow">Admin / Teacher profile</p>
+		<h1><%= @teacher.name %></h1>
+		<p class="muted"><%= @teacher.specialization.presence || "Faculty member" %></p>
+	</div>
+	<%= link_to "Edit", edit_admin_teacher_path(@teacher), class: "button button-secondary" %>
+</div>
+
+<div class="detail-grid">
+	<section class="content-panel">
+		<p class="eyebrow">Profile</p>
+		<dl class="detail-list">
+			<dt>Email</dt><dd><%= @teacher.user.email %></dd>
+			<dt>Status</dt><dd><%= @teacher.status.humanize %></dd>
+			<dt>Bio</dt><dd><%= @teacher.bio.presence || "Not provided" %></dd>
+		</dl>
+	</section>
+	<section class="content-panel">
+		<p class="eyebrow">Assigned classes</p>
+		<% if @teacher.classrooms.any? %>
+			<ul class="clean-list">
+				<% @teacher.classrooms.each do |classroom| %>
+					<li><strong><%= classroom.name %></strong><span><%= classroom.course.name %></span></li>
+				<% end %>
+			</ul>
+		<% else %>
+			<%= render "shared/empty_state", title: "No classes assigned" %>
+		<% end %>
+	</section>
+</div>
+
+<%= link_to "Back to teachers", admin_teachers_path, class: "text-link back-link" %>
